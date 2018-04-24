@@ -1,6 +1,6 @@
 package com.bignerdranch.android.criminalintent;
 
-import android.icu.text.SimpleDateFormat;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,16 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class CrimeListFragment extends Fragment {
 
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private int mCurrentPosition = -1;
 
     @Nullable
     @Override
@@ -36,11 +35,31 @@ public class CrimeListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
     private void updateUI(){
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
-        mAdapter = new CrimeAdapter(crimes);
-        mCrimeRecyclerView.setAdapter(mAdapter);
+        if(mAdapter == null)
+        {
+            mAdapter = new CrimeAdapter(crimes);
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        }
+        else {
+            if(mCurrentPosition > -1){
+                mAdapter.notifyItemChanged(mCurrentPosition);
+                mCurrentPosition = -1;
+            }
+            else {
+                mAdapter.notifyDataSetChanged();
+            }
+
+        }
+
     }
 
     private abstract class AbstractCrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -69,7 +88,9 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(getContext(), mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
+            mCurrentPosition = getAdapterPosition();
+            Intent intent = CrimePagerActivity.newIntent(getContext(), mCurrentPosition);
+            startActivity(intent);
         }
     }
 

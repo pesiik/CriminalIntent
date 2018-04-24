@@ -14,19 +14,25 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.util.UUID;
+
 import static android.widget.CompoundButton.*;
 
 public class CrimeFragment extends Fragment {
+
+    private static final String ARG_CRIME_POSITION = "crime_position";
 
     Crime mCrime;
     EditText mTitleField;
     Button mDateButton;
     CheckBox mSolvedCheckBox;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCrime = new Crime();
+        int position = getArguments().getInt(ARG_CRIME_POSITION);
+        mCrime = CrimeLab.get(getContext()).getCrime(position);
     }
 
     @Nullable
@@ -51,6 +57,7 @@ public class CrimeFragment extends Fragment {
 
             }
         });
+        mTitleField.setText(mCrime.getTitle());
 
         mDateButton = v.findViewById(R.id.crime_date);
         mDateButton.setText(mCrime.getDate().toString());
@@ -63,7 +70,19 @@ public class CrimeFragment extends Fragment {
                 mCrime.setSolved(isChecked);
             }
         });
+        mSolvedCheckBox.setChecked(mCrime.isSolved());
+
+
 
         return v;
+    }
+
+    public static CrimeFragment newInstance(int position){
+        Bundle args = new Bundle();
+        args.putInt(ARG_CRIME_POSITION, position);
+
+        CrimeFragment fragment = new CrimeFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 }
