@@ -32,17 +32,19 @@ public class CrimeFragment extends Fragment {
     private static final int REQUEST_TIME = 1;
 
     Crime mCrime;
+    int mPosition;
     EditText mTitleField;
     Button mDateButton;
     Button mTimeButton;
     CheckBox mSolvedCheckBox;
+    Button mRemoveButton;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int position = getArguments().getInt(ARG_CRIME_POSITION);
-        mCrime = CrimeLab.get(getContext()).getCrime(position);
+        mPosition = getArguments().getInt(ARG_CRIME_POSITION);
+        mCrime = CrimeLab.get(getContext()).getCrime(mPosition);
     }
 
     @Nullable
@@ -102,7 +104,14 @@ public class CrimeFragment extends Fragment {
         });
         mSolvedCheckBox.setChecked(mCrime.isSolved());
 
-
+        mRemoveButton = v.findViewById(R.id.crime_remove);
+        mRemoveButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CrimeLab.get(getContext()).removeCrime(mPosition);
+                getActivity().finish();
+            }
+        });
 
         return v;
     }

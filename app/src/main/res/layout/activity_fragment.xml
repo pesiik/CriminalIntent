@@ -3,4 +3,14 @@
     android:id="@+id/fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    />
+    >
+    <TextView
+        android:id="@+id/empty_list_text_view"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/empty_list"/>
+
+</FrameLayout>
