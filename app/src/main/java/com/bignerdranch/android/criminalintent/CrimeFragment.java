@@ -19,12 +19,14 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import java.util.Date;
+import java.util.UUID;
 
 import static android.widget.CompoundButton.*;
 
 public class CrimeFragment extends Fragment {
 
     private static final String ARG_CRIME_POSITION = "crime_position";
+    private static final String ARG_CRIME_ID = "crime_ID";
     private static final String DIALOG_DATE = "DialogDate";
     private static final String DIALOG_TIME = "DialogTime";
 
@@ -32,7 +34,6 @@ public class CrimeFragment extends Fragment {
     private static final int REQUEST_TIME = 1;
 
     Crime mCrime;
-    int mPosition;
     EditText mTitleField;
     Button mDateButton;
     Button mTimeButton;
@@ -43,8 +44,18 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPosition = getArguments().getInt(ARG_CRIME_POSITION);
-        mCrime = CrimeLab.get(getContext()).getCrime(mPosition);
+        UUID id = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
+        mCrime = CrimeLab.get(getContext()).getCrime(id);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if(mCrime != null)
+        {
+            CrimeLab.get(getContext()).updateCrime(mCrime);
+        }
     }
 
     @Nullable
@@ -108,7 +119,8 @@ public class CrimeFragment extends Fragment {
         mRemoveButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                CrimeLab.get(getContext()).removeCrime(mPosition);
+                CrimeLab.get(getContext()).removeCrime(mCrime);
+                mCrime = null;
                 getActivity().finish();
             }
         });
@@ -139,9 +151,9 @@ public class CrimeFragment extends Fragment {
         mTimeButton.setText(DateFormat.format("HH:mm:ss", mCrime.getTime()));
     }
 
-    public static CrimeFragment newInstance(int position){
+    public static CrimeFragment newInstance(UUID id){
         Bundle args = new Bundle();
-        args.putInt(ARG_CRIME_POSITION, position);
+        args.putSerializable(ARG_CRIME_ID, id);
 
         CrimeFragment fragment = new CrimeFragment();
         fragment.setArguments(args);
