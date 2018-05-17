@@ -3,6 +3,8 @@
     package="com.bignerdranch.android.criminalintent">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-feature android:name="android.hardware.camera"
+        android:required="false"/>
 
     <application
         android:allowBackup="true"
@@ -24,5 +26,16 @@
             android:name=".CrimePagerActivity"
             android:parentActivityName=".CrimeListActivity">
         </activity>
+
+        <provider
+            android:authorities="com.bignerdranch.android.criminalintent.fileprovider"
+            android:name="android.support.v4.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/files"
+                />
+        </provider>
     </application>
 </manifest>
