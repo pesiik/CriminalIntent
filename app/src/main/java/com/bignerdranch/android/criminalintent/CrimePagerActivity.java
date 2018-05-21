@@ -13,10 +13,12 @@ import android.view.View;
 import android.widget.Button;
 
 import java.util.List;
+import java.util.UUID;
 
-public class CrimePagerActivity extends AppCompatActivity {
+public class CrimePagerActivity extends AppCompatActivity  implements CrimeFragment.Callbacks{
 
     protected static final String EXTRA_CRIME_POSITION = "com.bignerdranch.android.criminalintent.crime_position";
+    protected static final String EXTRA_CRIME_ID = "com.bignerdranch.android.criminalintent.crime_id";
 
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
@@ -29,14 +31,20 @@ public class CrimePagerActivity extends AppCompatActivity {
         return intent;
     }
 
-
+    public static Intent newIntent(Context packageContext, UUID id){
+        Intent intent = new Intent(packageContext, CrimePagerActivity.class);
+        intent.putExtra(EXTRA_CRIME_ID, id);
+        return intent;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crime_pager);
 
-        int positionItem = getIntent().getIntExtra(EXTRA_CRIME_POSITION, -1);
+        int positionItem = 0;
+        UUID id = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
+
         mViewPager = (ViewPager) findViewById(R.id.crime_view_pager);
 
         mFirstCrimeButton = (Button) findViewById(R.id.first_button);
@@ -66,6 +74,14 @@ public class CrimePagerActivity extends AppCompatActivity {
         });
 
         mCrimes = CrimeLab.get(this).getCrimes();
+
+        for (Crime crime : mCrimes){
+            if(crime.getId() == id){
+                break;
+            }
+            positionItem++;
+        }
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
@@ -86,4 +102,8 @@ public class CrimePagerActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onCrimeUpdated(Crime crime) {
+
+    }
 }
