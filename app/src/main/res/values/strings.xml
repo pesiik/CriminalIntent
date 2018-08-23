@@ -4,6 +4,9 @@
     <string name="crime_title_label">Title</string>
     <string name="crime_details_label">Details</string>
     <string name="crime_solved_label">Solved</string>
+    <string name="crime_photo_button_description">Take photo of crime scene</string>
+    <string name="crime_photo_no_image_description">Crime scene photo (noy set)</string>
+    <string name="crime_photo_image_description">Crime scene photo (set)</string>
     <string name="police_button">Police call</string>
     <string name="first_fragment_button">First crime</string>
     <string name="last_fragment_button">Last crime</string>

@@ -22,7 +22,9 @@
         app:layout_constraintBottom_toTopOf="@+id/crime_camera"
         app:layout_constraintEnd_toStartOf="@+id/crime_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/crime_photo_no_image_description"
+        android:focusable="true"/>
 
     <ImageButton
         android:id="@+id/crime_camera"
@@ -36,7 +38,8 @@
         app:layout_constraintBottom_toTopOf="@+id/description_text_view"
         app:layout_constraintEnd_toStartOf="@+id/crime_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/crime_photo" />
+        app:layout_constraintTop_toBottomOf="@+id/crime_photo"
+        android:contentDescription="@string/crime_photo_button_description"/>
 
     <TextView
         android:id="@+id/title_text_view"
@@ -75,7 +78,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/crime_camera" />
+        app:layout_constraintTop_toBottomOf="@+id/crime_camera"
+        android:text="@string/crime_title_label"
+        android:labelFor="@id/crime_title"/>
 
     <Button
         android:id="@+id/crime_date"
