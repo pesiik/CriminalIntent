@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.bignerdranch.android.criminalintent.database.CrimeBaseHelper;
 import com.bignerdranch.android.criminalintent.database.CrimeCursorWrapper;
-import com.bignerdranch.android.criminalintent.database.CrimeDbSchema;
 import com.bignerdranch.android.criminalintent.database.CrimeDbSchema.CrimeTable;
 
 import java.io.File;
